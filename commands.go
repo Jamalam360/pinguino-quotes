@@ -96,7 +96,7 @@ var (
 			},
 		},
 		{
-			Name: "quotes",
+			Name:        "quotes",
 			Description: "Commands to browse quotes",
 			Options: []*discordgo.ApplicationCommandOption{
 				{

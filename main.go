@@ -7,7 +7,6 @@ import (
 	"os/signal"
 
 	"github.com/bwmarrin/discordgo"
-	_ "github.com/lib/pq"
 	"gopkg.in/yaml.v3"
 )
 
@@ -20,7 +19,7 @@ type Config struct {
 	Token    string
 	GuildId  string `yaml:"guild_id"`
 	Database struct {
-		ConnectionString string `yaml:"connection_string"`
+		DatabasePath string `yaml:"database_path"`
 	}
 }
 
@@ -42,7 +41,7 @@ func ReadConfig() Config {
 
 	config.Token = os.ExpandEnv(config.Token)
 	config.GuildId = os.ExpandEnv(config.GuildId)
-	config.Database.ConnectionString = os.ExpandEnv(config.Database.ConnectionString)
+	config.Database.DatabasePath = os.ExpandEnv(config.Database.DatabasePath)
 
 	return config
 }

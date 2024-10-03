@@ -93,7 +93,7 @@ func HandleSettings(session *discordgo.Session, interaction *discordgo.Interacti
 				Value: ChannelAsMention(id),
 			},
 			{
-				Name: "Actor",
+				Name:  "Actor",
 				Value: UserAsMention(interaction.Member.User.ID),
 			},
 		}, session, interaction, ctx)
@@ -131,7 +131,7 @@ func HandleSettings(session *discordgo.Session, interaction *discordgo.Interacti
 				Value: ChannelAsMention(id),
 			},
 			{
-				Name: "Actor",
+				Name:  "Actor",
 				Value: UserAsMention(interaction.Member.User.ID),
 			},
 		}, session, interaction, ctx)
@@ -249,7 +249,7 @@ func SendQuote(author string, iconUrl string, quote string, session *discordgo.S
 			Value: author,
 		},
 		{
-			Name: "Actor",
+			Name:  "Actor",
 			Value: UserAsMention(interaction.Member.User.ID),
 		},
 	}, session, interaction, ctx)
@@ -296,7 +296,7 @@ func HandleQuotes(session *discordgo.Session, interaction *discordgo.Interaction
 }
 
 type PaginationState struct {
-	Quotes []Quote
+	Quotes    []Quote
 	PageIndex int
 }
 
@@ -304,7 +304,7 @@ var paginationStates = map[string]PaginationState{}
 
 func SendPaginatedQuotes(quotes []Quote, session *discordgo.Session, interaction *discordgo.InteractionCreate, ctx *Context) {
 	paginationStates[interaction.ID] = PaginationState{
-		Quotes: quotes,
+		Quotes:    quotes,
 		PageIndex: 0,
 	}
 	session.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
@@ -339,7 +339,7 @@ func HandlePaginationButton(session *discordgo.Session, interaction *discordgo.I
 			state.PageIndex--
 		}
 	case "next":
-		if state.PageIndex < len(state.Quotes) / 10 {
+		if state.PageIndex < len(state.Quotes)/10 {
 			state.PageIndex++
 		}
 	}
@@ -361,13 +361,13 @@ func CreatePaginationButtons(interactionId string) []discordgo.MessageComponent 
 		discordgo.ActionsRow{
 			Components: []discordgo.MessageComponent{
 				discordgo.Button{
-					Label: 	"Previous",
-					Style: 	discordgo.PrimaryButton,
+					Label:    "Previous",
+					Style:    discordgo.PrimaryButton,
 					CustomID: fmt.Sprintf("quotes_previous_%s", interactionId),
 				},
 				discordgo.Button{
-					Label: 	"Next",
-					Style: 	discordgo.PrimaryButton,
+					Label:    "Next",
+					Style:    discordgo.PrimaryButton,
 					CustomID: fmt.Sprintf("quotes_next_%s", interactionId),
 				},
 			},
@@ -387,13 +387,13 @@ func CreatePaginationEmbed(quotes []Quote, pageIndex int) *discordgo.MessageEmbe
 	for i := start; i < end; i++ {
 		quote := quotes[i]
 		fields = append(fields, &discordgo.MessageEmbedField{
-			Name: quote.Author,
+			Name:  quote.Author,
 			Value: quote.Quote,
 		})
 	}
 
 	return &discordgo.MessageEmbed{
-		Title: fmt.Sprintf("Quotes (%d-%d of %d)", start + 1, end, len(quotes)),
+		Title:  fmt.Sprintf("Quotes (%d-%d of %d)", start+1, end, len(quotes)),
 		Fields: fields,
 	}
 }
@@ -415,7 +415,7 @@ func SendLog(action string, fields []*discordgo.MessageEmbedField, session *disc
 	}
 
 	_, err = session.ChannelMessageSendEmbed(channel.ID, &discordgo.MessageEmbed{
-		Title: action,
+		Title:  action,
 		Fields: fields,
 	})
 	if err != nil {

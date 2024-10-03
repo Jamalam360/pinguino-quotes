@@ -3,8 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
-
-	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type GuildSettings struct {
@@ -21,7 +20,7 @@ type Quote struct {
 }
 
 func ConnectDatabase(config Config) *sql.DB {
-	db, err := sql.Open("postgres", config.Database.ConnectionString)
+	db, err := sql.Open("sqlite3", config.Database.DatabasePath)
 	CheckFatal(err)
 	log.Println("Database connected")
 	return db
@@ -111,7 +110,7 @@ func InsertQuote(quote Quote, ctx *Context) error {
 func GetGuildSettings(guildId string, ctx *Context) (GuildSettings, error) {
 	var settings GuildSettings
 	err := ctx.Database.QueryRow(`SELECT * FROM guild_settings WHERE guild_id = $1`, guildId).Scan(&settings.GuildID, &settings.QuotesChannelId, &settings.LogsChannelId)
-	return settings, err	
+	return settings, err
 }
 
 func UpdateGuildSettings(settings GuildSettings, ctx *Context) error {

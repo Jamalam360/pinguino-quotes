@@ -1,3 +1,3 @@
 config.yaml
+database.db
 .direnv/
-.dev_postgres/
