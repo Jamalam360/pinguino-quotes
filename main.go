@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"gopkg.in/yaml.v3"
@@ -42,6 +43,10 @@ func ReadConfig() Config {
 	config.Token = os.ExpandEnv(config.Token)
 	config.GuildId = os.ExpandEnv(config.GuildId)
 	config.Database.DatabasePath = os.ExpandEnv(config.Database.DatabasePath)
+
+	if strings.Contains(config.Token, "$") {
+		log.Printf("Token might be suspicious: %s", config.Token);
+	}
 
 	return config
 }
